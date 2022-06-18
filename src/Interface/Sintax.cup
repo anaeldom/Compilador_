@@ -1,0 +1,70 @@
+package Interface;
+
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Linea, Comillas, T_dato, Cadena, If, Fi, Else, Do, Until, While, For,
+    Igual, Suma, Resta, Multiplicacion, Division, Op_logico, Op_relacional,
+    Read, Write, Not, And, Or, Then,Op_SR,Op_MD, 
+    Op_atribucion, Op_incremento, Op_booleano, Parentesis_a, Parentesis_c,
+    Llave_a, Llave_c, Corchete_a, Corchete_c, Program, P_coma, Coma, Identificador,
+    Numero, ERROR;
+non terminal INICIO, SENTENCIA, DECLARACION, DECLARACION_FOR, IF, IF_ELSE,
+    WHILE, DO_WHILE, FOR, SENTENCIA_BOOLEANA, SENTENCIA_FOR, DO_UNTIL, EJEMPLO1, DATO;
+
+start with INICIO;
+
+INICIO ::= 
+    Program Llave_a SENTENCIA Llave_c
+;
+SENTENCIA ::= 
+    SENTENCIA DECLARACION |
+    DECLARACION |
+    SENTENCIA IF | 
+    IF |
+    SENTENCIA IF_ELSE |
+    IF_ELSE |
+    SENTENCIA WHILE |
+    WHILE |
+    SENTENCIA DO_UNTIL
+    DO_UNTIL |
+    SENTENCIA FOR |
+    FOR
+;
+DECLARACION ::= 
+    T_dato Identificador P_coma
+;
+IF ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Then Llave_a SENTENCIA Llave_c Fi
+;
+SENTENCIA_BOOLEANA ::= 
+    Op_booleano | 
+    Identificador Op_relacional Op_booleano |
+    Identificador Op_relacional Numero |
+    Identificador Op_relacional Identificador |
+    Numero Op_relacional Numero |
+    Numero Op_relacional Identificador
+;
+
+IF_ELSE ::= If Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Then Llave_a SENTENCIA Llave_c Else Llave_a SENTENCIA Llave_c Fi
+;
+WHILE ::= While Parentesis_a SENTENCIA_BOOLEANA Parentesis_c Llave_a SENTENCIA Llave_c
+;
+DO_UNTIL ::= Do Llave_a SENTENCIA Llave_c Until Parentesis_a SENTENCIA_BOOLEANA Parentesis_c P_coma
+;
+SENT_READ ::= Read Identificador P_coma
+;
+SENT_WRITE ::= Write Identificador P_coma
+;
